@@ -1,0 +1,28 @@
+{
+  "name": "image-organizer",
+  "version": "1.0.0",
+  "description": "Organizes all pictures by date",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/egll-tech/image-organizer.git"
+  },
+  "keywords": [
+    "image",
+    "images",
+    "organize",
+    "organizer",
+    "batch",
+    "date",
+    "automation"
+  ],
+  "author": "Eduardo A Guzman Lau Len <eduardo@egll.tech>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/egll-tech/image-organizer/issues"
+  },
+  "homepage": "https://github.com/egll-tech/image-organizer#readme"
+}
