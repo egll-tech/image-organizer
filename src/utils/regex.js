@@ -19,7 +19,13 @@ export class Date {
   }
 
   static getMatchFromEightDigits(filename) {
-    return EIGHT_DIGITS_DATE_REGEX.exec(filename);
+    let result = EIGHT_DIGITS_DATE_REGEX.exec(filename);
+    if (!result) {
+      result = filename
+        .split(/[\s\_\-]/gi)
+        .find((section) => EIGHT_DIGITS_DATE_REGEX.test(section));
+    }
+    return result;
   }
 
   static isDefaultFormatDate(filename) {

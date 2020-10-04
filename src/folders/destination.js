@@ -74,7 +74,7 @@ function matchToStructure(match, format = "YYYYMMDD") {
 
 function toStructure(match, format = "YYYYMMDD") {
   const parsed = moment(match, format);
-  return parsed.isValid()
-    ? path.join(result.year(), result.format("MM"), result.format("DD"))
+  return parsed.isValid() && parsed.year() > 2000
+    ? path.join(parsed.year(), parsed.format("MM"), parsed.format("DD"))
     : null;
 }
