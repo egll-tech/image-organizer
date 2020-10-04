@@ -5,6 +5,7 @@ import { Logger } from '../utils/logger';
 import path from 'path';
 import fs from 'fs';
 import { compare } from './compare';
+import { getStats } from './stats';
 
 export async function processMedia(
   media_list: string[],
@@ -45,7 +46,7 @@ async function processDuplicates(
   destination: string
 ): Promise<DUPLICATES_RESULTS> {
   if (fs.existsSync(destination)) {
-    const date = getDate(destination);
+    const date = await getDate(destination);
     const result = await compare(date, newcomer, destination);
 
     if (result === newcomer) {
@@ -67,12 +68,15 @@ function rm(file: string): void {
   fs.unlinkSync(file);
 }
 
-function getDate(full_path: string): moment.Moment {
+async function getDate(full_path: string): Promise<moment.Moment> {
   const day = path.basename(path.resolve(full_path, '..'));
   const month = path.basename(path.resolve(full_path, '..', '..'));
   const year = path.basename(path.resolve(full_path, '..', '..', '..'));
 
-  return moment(`${year}-${month}-${day}`, 'YYYY-MM-DD');
+  let result = moment(`${year}-${month}-${day}`, 'YYYY-MM-DD');
+  return result.isValid()
+    ? result
+    : moment((await getStats(full_path)).ctimeMs);
 }
 
 enum DUPLICATES_RESULTS {
