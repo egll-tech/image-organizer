@@ -1,32 +1,32 @@
-const ora = require("ora");
-const path = require("path");
-const { listAllFolders } = require("./folders/list");
-const { listAllMedia } = require("./media/list");
-const { processMedia } = require("./media/process");
+import ora from 'ora';
+import path from 'path';
+import { listAllFolders } from './folders/list';
+import { listAllMedia } from './media/list';
+import { processMedia } from './media/process';
 
 const args = process.argv.slice(2);
 
 const spinner_options = {
-  color: "magenta",
-  spinner: "arc",
+  color: 'magenta',
+  spinner: 'arc',
 };
 
 (async () => {
   const input = args[0] || __dirname;
-  const output = args[1] || path.join(__dirname, "output");
+  const output = args[1] || path.join(__dirname, 'output');
 
   const folder_spinner = ora({
-    text: "Getting all folder to process",
+    text: 'Getting all folder to process',
     ...spinner_options,
-  }).start();
+  } as ora.Options).start();
 
   const folders = await listAllFolders(input, [output]);
-  folder_spinner.succeed("All the folder have been mapped.");
+  folder_spinner.succeed(`All the folder(s) have been mapped.`);
 
   const images_spinner = ora({
     ...spinner_options,
     text: `Getting all images from the ${folders.size} folder(s).`,
-  }).start();
+  } as ora.Options).start();
 
   const images = await listAllMedia(folders);
 
@@ -37,7 +37,7 @@ const spinner_options = {
   const processing_spinner = ora({
     ...spinner_options,
     text: `Processing ${images.length} images.`,
-  }).start();
+  } as ora.Options).start();
   const duplicates = await processMedia(images, output);
   if (!duplicates.length) {
     processing_spinner.succeed(`${images.length} images have been processed.`);
@@ -47,3 +47,10 @@ const spinner_options = {
     );
   }
 })();
+
+export const sum = (a: number, b: number) => {
+  if ('development' === process.env.NODE_ENV) {
+    console.log('boop');
+  }
+  return a + b;
+};

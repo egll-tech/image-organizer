@@ -1,31 +1,64 @@
 {
-  "name": "image-organizer",
-  "version": "1.0.0",
   "description": "Organizes all pictures by date",
-  "main": "src/app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/egll-tech/image-organizer.git"
   },
-  "keywords": [
-    "image",
-    "images",
-    "organize",
-    "organizer",
-    "batch",
-    "date",
-    "automation"
-  ],
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "name": "image-organizer-ts",
   "author": "Eduardo A Guzman Lau Len <eduardo@egll.tech>",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/egll-tech/image-organizer/issues"
   },
   "homepage": "https://github.com/egll-tech/image-organizer#readme",
+  "module": "dist/image-organizer-ts.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/image-organizer-ts.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/image-organizer-ts.esm.js",
+      "limit": "10 KB"
+    }
+  ],
   "devDependencies": {
+    "@size-limit/preset-small-lib": "^4.6.0",
+    "husky": "^4.3.0",
+    "size-limit": "^4.6.0",
+    "tsdx": "^0.14.0",
+    "tslib": "^2.0.1",
     "typescript": "^4.0.3"
   },
   "dependencies": {
