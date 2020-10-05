@@ -5,10 +5,10 @@ name: Run unit tests
 
 on:
   push:
-    branches: [master]
-  pull_request:
-    types: [opened, reopened, synchronize]
-    branches: [FRON-*, master]
+    branches: [master, FRON*, feature*, release*]
+  # pull_request:
+  #   types: [opened, reopened, synchronize]
+  #   branches: [FRON-*, master]
 
 jobs:
   build:
