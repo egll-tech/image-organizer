@@ -5,14 +5,13 @@ name: Run unit tests
 
 on:
   push:
-    branches: [ FRON-*, master ]
+    branches: [FRON-*, master]
   pull_request:
     types: [opened, reopened, synchronize]
     branches: [FRON-*, master]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,18 +19,18 @@ jobs:
         node-version: [10.x]
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        always-auth: true
-        node-version: ${{ matrix.node-version }}
-        registry-url: https://registry.npmjs.org
-        scope: '@nzxt'
-    - name: Install dependancies
-      run: npm ci
-      env:
-        NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-    - name: Running tests
-      run: npm run jest
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          always-auth: true
+          node-version: ${{ matrix.node-version }}
+          registry-url: https://registry.npmjs.org
+          scope: '@nzxt'
+      - name: Install dependancies
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+      - name: Running tests
+        run: npm run jest
