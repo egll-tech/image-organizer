@@ -34,4 +34,4 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
     - name: Running tests
-      run: npm test
+      run: npm run jest
