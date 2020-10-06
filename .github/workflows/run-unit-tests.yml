@@ -32,22 +32,39 @@ jobs:
         run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+      - name: Upload package
+        uses: actions/upload-artifact@v2
+        with:
+          name: source
+          path: ./**/*.*
   tests:
     needs: [checkout]
     runs-on: ubuntu-latest
     steps:
+      - name: Download math result for job 1
+        uses: actions/download-artifact@v2
+        with:
+          name: source
       - name: Running tests
         run: npm run jest
   lint:
     needs: [checkout]
     runs-on: ubuntu-latest
     steps:
+      - name: Download math result for job 1
+        uses: actions/download-artifact@v2
+        with:
+          name: source
       - name: Running lint
         run: npm run lint
   build:
     needs: [checkout]
     runs-on: ubuntu-latest
     steps:
+      - name: Download math result for job 1
+        uses: actions/download-artifact@v2
+        with:
+          name: source
       - name: Building
         run: npm run build
   trigger_event:
