@@ -5,18 +5,18 @@ name: Run unit tests
 
 on:
   push:
-    branches: [master, FRON*, feature*, release*]
-  # pull_request:
-  #   types: [opened, reopened, synchronize]
-  #   branches: [FRON-*, master]
+    branches: [master, release*, beta-*]
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [FRON-*, feature-*]
 
 jobs:
-  build:
+  checkout:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [10.x]
+        node-version: [12.x]
 
     steps:
       - name: Checkout repository
@@ -32,5 +32,30 @@ jobs:
         run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+  tests:
+    needs: [checkout]
+    runs-on: ubuntu-latest
+    steps:
       - name: Running tests
         run: npm run jest
+  lint:
+    needs: [checkout]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Running lint
+        run: npm run lint
+  build:
+    needs: [checkout]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Building
+        run: npm run build
+  trigger_event:
+    needs: [tests, lint, build]
+    runs-on: ubuntu-latest
+    env:
+      TESTS_RESULT: ${{ needs.tests.result }}
+      LINT_RESULT: ${{ needs.lint.result }}
+      BUILD_RESULT: ${{ needs.build.result }}
+    steps:
+      - run: echo {{ needs.tests.result }} {{ needs.lint.result }} {{ needs.build.result }} $TESTS_RESULT $LINT_RESULT $BUILD_RESULT ${{ needs.tests.result }} ${{ needs.lint.result }} ${{ needs.build.result }}

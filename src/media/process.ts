@@ -7,11 +7,18 @@ import fs from 'fs';
 import { compare } from './compare';
 import { getStats } from './stats';
 
+enum DUPLICATES_RESULTS {
+  OVERWRITE_EXISTING,
+  DELETE_NEWCOMER,
+  UNKNOWN,
+  REGULAR,
+}
+
 export async function processMedia(
   media_list: string[],
   output: string
 ): Promise<string[]> {
-  const duplicates = new Array();
+  const duplicates = [];
   Logger.start(output);
 
   for (let media of media_list) {
@@ -77,11 +84,4 @@ async function getDate(full_path: string): Promise<moment.Moment> {
   return result.isValid()
     ? result
     : moment((await getStats(full_path)).ctimeMs);
-}
-
-enum DUPLICATES_RESULTS {
-  OVERWRITE_EXISTING,
-  DELETE_NEWCOMER,
-  UNKNOWN,
-  REGULAR,
 }

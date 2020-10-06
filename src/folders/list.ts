@@ -5,12 +5,12 @@ export async function listAllFolders(
   input: string,
   blacklist: string[] = []
 ): Promise<Set<string>> {
-  const folders = new Array();
+  const folders = [];
   folders.push(input);
   const results = new Set<string>();
 
   while (folders.length) {
-    const folder = folders.pop();
+    const folder: string = folders.pop() || path.resolve('.');
     if (!results.has(folder) && !blacklist.includes(folder)) {
       results.add(folder);
     }
