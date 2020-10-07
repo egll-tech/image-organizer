@@ -11,60 +11,61 @@ on:
     branches: [FRON-*, feature-*]
 
 jobs:
-  checkout:
-    runs-on: ubuntu-latest
+  # checkout:
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [12.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: [12.x]
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          always-auth: true
-          node-version: ${{ matrix.node-version }}
-          registry-url: https://registry.npmjs.org
-          scope: '@nzxt'
-      - name: Install dependancies
-        run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-      - name: Upload package
-        uses: actions/upload-artifact@v2
-        with:
-          name: source
-          path: ./**/*.*
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-node@v1
+  #       with:
+  #         always-auth: true
+  #         node-version: ${{ matrix.node-version }}
+  #         registry-url: https://registry.npmjs.org
+  #         scope: '@nzxt'
+  #     - run: npm ci
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+  #     - id: npm-cache
+  #       run: |
+  #         echo "::set-output name=dir::$(npm config get cache)"
+  #     - uses: actions/cache@v2
+  #       with:
+  #         path: ${{ steps.npm-cache.outputs.dir }}
+  #         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-node-
   tests:
-    needs: [checkout]
     runs-on: ubuntu-latest
     steps:
       - name: Download math result for job 1
-        uses: actions/download-artifact@v2
+        uses: actions/github-actions@v1
         with:
-          name: source
+          node-version: [12.x]
+          auth-token: ${{secrets.NPM_TOKEN}}
       - name: Running tests
         run: npm run jest
   lint:
-    needs: [checkout]
     runs-on: ubuntu-latest
     steps:
       - name: Download math result for job 1
-        uses: actions/download-artifact@v2
+        uses: actions/github-actions@v1
         with:
-          name: source
+          node-version: [12.x]
+          auth-token: ${{secrets.NPM_TOKEN}}
       - name: Running lint
         run: npm run lint
   build:
-    needs: [checkout]
     runs-on: ubuntu-latest
     steps:
       - name: Download math result for job 1
-        uses: actions/download-artifact@v2
+        uses: actions/github-actions@v1
         with:
-          name: source
+          node-version: [12.x]
+          auth-token: ${{secrets.NPM_TOKEN}}
       - name: Building
         run: npm run build
   trigger_event:
