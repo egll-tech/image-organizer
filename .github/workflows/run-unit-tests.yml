@@ -44,7 +44,6 @@ jobs:
       - name: Download math result for job 1
         uses: actions/github-actions@v1
         with:
-          node-version: [12.x]
           auth-token: ${{secrets.NPM_TOKEN}}
       - name: Running tests
         run: npm run jest
@@ -54,7 +53,6 @@ jobs:
       - name: Download math result for job 1
         uses: actions/github-actions@v1
         with:
-          node-version: [12.x]
           auth-token: ${{secrets.NPM_TOKEN}}
       - name: Running lint
         run: npm run lint
@@ -64,7 +62,6 @@ jobs:
       - name: Download math result for job 1
         uses: actions/github-actions@v1
         with:
-          node-version: [12.x]
           auth-token: ${{secrets.NPM_TOKEN}}
       - name: Building
         run: npm run build
