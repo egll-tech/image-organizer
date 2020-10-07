@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download math result for job 1
-        uses: actions/github-actions@v1
+        uses: egll-tech/github-actions@v1
         with:
           auth-token: ${{secrets.NPM_TOKEN}}
       - name: Running tests
@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download math result for job 1
-        uses: actions/github-actions@v1
+        uses: egll-tech/github-actions@v1
         with:
           auth-token: ${{secrets.NPM_TOKEN}}
       - name: Running lint
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download math result for job 1
-        uses: actions/github-actions@v1
+        uses: egll-tech/github-actions@v1
         with:
           auth-token: ${{secrets.NPM_TOKEN}}
       - name: Building
