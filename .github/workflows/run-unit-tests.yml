@@ -100,7 +100,7 @@ jobs:
   trigger_event:
     needs: [tests, lint, build]
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'ref/heads/master'}}
+    if: ${{ github.ref }} == 'ref/heads/master'
     env:
       TESTS_RESULT: ${{ needs.tests.result }}
       LINT_RESULT: ${{ needs.lint.result }}
