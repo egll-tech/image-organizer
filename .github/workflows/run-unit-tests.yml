@@ -100,10 +100,6 @@ jobs:
   trigger_event:
     needs: [tests, lint, build]
     runs-on: ubuntu-latest
-    if: ${{ github.ref }} == 'ref/heads/master'
-    env:
-      TESTS_RESULT: ${{ needs.tests.result }}
-      LINT_RESULT: ${{ needs.lint.result }}
-      BUILD_RESULT: ${{ needs.build.result }}
+    if: contains(${{ github.ref }}, 'master') || contains(${{ github.ref }}, 'release') || contains(${{ github.ref }}, 'beta') || contains(${{ github.ref }}, 'feature')
     steps:
-      - run: echo ${{ github.ref }} ${{ github.head_ref }} ${{ github.base_ref }} $TESTS_RESULT $LINT_RESULT $BUILD_RESULT ${{ needs.tests.result }} ${{ needs.lint.result }} ${{ needs.build.result }}
+      - run: echo ${{ github.ref }}
