@@ -1,0 +1,33 @@
+name: 'Custom Checkout made by me v1'
+description: 'Composite action to prepare the environment to run'
+inputs:
+  node-version:
+    description: 'Versions of nodejs'
+    required: true
+    default: 12.x
+  auth-token:
+    description: 'NPM Auth token'
+    required: true
+    default: ${{secrets.NPM_TOKEN}}
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        always-auth: true
+        node-version: ${{ inputs.node-version }}
+        registry-url: https://registry.npmjs.org
+        scope: '@nzxt'
+    - id: npm-cache
+      run: |
+        echo "::set-output name=dir::$(npm config get cache)"
+    - uses: actions/cache@v2
+      with:
+        path: ${{ steps.npm-cache.outputs.dir }}
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - run: npm ci
+      env:
+        NODE_AUTH_TOKEN: ${{inputs.auth-token}}

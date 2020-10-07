@@ -24,7 +24,7 @@ export class DateRegex {
     if (!result) {
       result =
         filename
-          .split(/[\s\_\-]/gi)
+          .split(/[\s_-]/gi)
           .find(section => EIGHT_DIGITS_DATE_REGEX.test(section)) || null;
     }
     return result;

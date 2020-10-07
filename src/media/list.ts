@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 export async function listAllMedia(folders: Set<string>): Promise<string[]> {
-  const images = new Array();
+  const images: string[] = [];
 
   for (const folder of Array.from(folders)) {
     await new Promise((resolve, reject) => {
