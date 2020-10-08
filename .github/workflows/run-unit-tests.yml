@@ -33,7 +33,7 @@ jobs:
           echo "::set-output name=dir::$(npm config get cache)"
       - uses: actions/cache@v2
         with:
-          path: ${{ steps.npm-cache.outputs.dir }}
+          path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
@@ -45,18 +45,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - id: npm-cache
-        run: |
-          echo "::set-output name=dir::$(npm config get cache)"
       - uses: actions/cache@v2
         with:
-          path: ${{ steps.npm-cache.outputs.dir }}
+          path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       - name: Running tests
         run: npm run jest
   lint:
@@ -64,18 +58,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - id: npm-cache
-        run: |
-          echo "::set-output name=dir::$(npm config get cache)"
       - uses: actions/cache@v2
         with:
-          path: ${{ steps.npm-cache.outputs.dir }}
+          path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       - name: Running lint
         run: npm run lint
   build:
@@ -83,18 +71,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - id: npm-cache
-        run: |
-          echo "::set-output name=dir::$(npm config get cache)"
       - uses: actions/cache@v2
         with:
-          path: ${{ steps.npm-cache.outputs.dir }}
+          path: node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       - name: Building
         run: npm run build
   trigger_event:
