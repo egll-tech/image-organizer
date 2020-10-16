@@ -3,6 +3,7 @@ name: Second
 on:
   workflow_run:
     workflows: ["First long name"]
+    branches: [master, feature*]
     types: 
       - requested
 
