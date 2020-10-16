@@ -1,0 +1,10 @@
+name: First long name
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'FIRST WORKFLOW'

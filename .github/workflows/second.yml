@@ -1,0 +1,13 @@
+name: Second
+
+on:
+  workflow_run:
+    workflows: ["First long name"]
+    types: 
+      - requested
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'WORKFLOW RUN IS WORKING' $GITHUB_REF
