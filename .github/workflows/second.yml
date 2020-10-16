@@ -11,3 +11,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo 'WORKFLOW RUN IS WORKING' $GITHUB_REF
+      - run: echo 'WORKFLOW RUN IS WORKING' $GITHUB_REF suavemente!
