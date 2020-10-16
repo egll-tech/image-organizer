@@ -8,3 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo 'FIRST WORKFLOW'
+      - run: echo 'FIRST WORKFLOW update'
