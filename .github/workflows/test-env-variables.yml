@@ -1,0 +1,34 @@
+name: Testing changing environment variables
+
+on:
+  push:
+
+env:
+  VARIABLE: 'initial text'
+
+jobs:
+  first-job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo ${{ env.VARIABLE }}
+          echo "VARIABLE2=new" >> $GITHUB_ENV
+          echo $VARIABLE2
+          export VARIABLE3=new2
+          echo $VARIABLE3
+          echo ${{ env.VARIABLE3 }}
+  second-job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  third-job:
+    runs-on: ubuntu-latest
+    needs: [first-job]
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
