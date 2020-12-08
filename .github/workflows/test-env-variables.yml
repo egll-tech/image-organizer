@@ -5,18 +5,36 @@ on:
 
 env:
   VARIABLE: 'initial text'
+  # RENDER_VARIABLE4: (jq -r .version package.json)
+  RENDER_VARIABLE2: jq -r .version package.json
+  # RENDER_VARIABLE4: grep -o '"version": *"[^"]*' package.json | grep -o '[^"]*$'
+  # RENDER_VARIABLE4: grep -o '"version": *"[^"]*' package.json | grep -o '[^"]*$'
+  BRANCH: echo $GITHUB_REF | sed -r 's/.*\///g' | sed -r 's/\W/-/g'
 
 jobs:
   first-job:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
-      - run: |
+      - uses: actions/checkout@v2
+      - shell: bash
+        run: |
           echo ${{ env.VARIABLE }}
           echo "VARIABLE2=new" >> $GITHUB_ENV
           echo $VARIABLE2
-          export VARIABLE3=new2
           echo $VARIABLE3
-          echo ${{ env.VARIABLE3 }}
+          echo "testing variables"
+          echo $( ${{ env.RENDER_VARIABLE2 }} )
+          echo $( $RENDER_VARIABLE2 )
+          echo "RENDER_VARIABLE2=$( ${{ env.RENDER_VARIABLE2 }} )" >> $GITHUB_ENV
+          echo "BRANCH=$( ${{ env.BRANCH }} )" >> $GITHUB_ENV
+          echo $BRANCH
+          echo ${{ env.BRANCH}}
+          echo ${{ github.head_ref }}
+      - uses: actions/upload-artifact@v2
+        if: success()
+        with:
+          name: eagle-${{ env.RENDER_VARIABLE2 }}-${{ (env.RENDER_VARIABLE2) }}-${{ env.BRANCH}}-$BRANCH
+          path: LICENSE
   second-job:
     runs-on: ubuntu-latest
     steps:
