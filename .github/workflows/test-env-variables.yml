@@ -13,7 +13,8 @@ env:
 
 jobs:
   first-job:
-    runs-on: windows-latest
+    if: github.head_ref == 'master'
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - shell: bash
@@ -28,7 +29,7 @@ jobs:
           echo "RENDER_VARIABLE2=$( ${{ env.RENDER_VARIABLE2 }} )" >> $GITHUB_ENV
           echo "BRANCH=$( ${{ env.BRANCH }} )" >> $GITHUB_ENV
           echo $BRANCH
-          echo ${{ env.BRANCH}}
+          echo ${{ env.BRANCH }}
           echo ${{ github.head_ref }}
       - uses: actions/upload-artifact@v2
         if: success()
@@ -36,6 +37,7 @@ jobs:
           name: eagle-${{ env.RENDER_VARIABLE2 }}-${{ (env.RENDER_VARIABLE2) }}-${{ env.BRANCH}}-$BRANCH
           path: LICENSE
   second-job:
+    if: startsWith( github.head_ref, 'master')
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -43,8 +45,48 @@ jobs:
           echo ${{ env.VARIABLE }}
           echo $VARIABLE3
   third-job:
+    if: startsWith( github.head_ref, 'master') || github.head_ref == 'master'
     runs-on: ubuntu-latest
-    needs: [first-job]
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  fourth-job:
+    if: startsWith( github.head_ref, 'master') && github.head_ref == 'master'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  five-job:
+    if: startsWith( github.head_ref, 'master1') || github.head_ref == 'master'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  sixth-job:
+    if: startsWith( github.head_ref, 'master1') && github.head_ref == 'master'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  seventh-job:
+    if: startsWith( github.head_ref, 'master') || github.head_ref == 'master1'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  eigth-job:
+    if: startsWith( github.head_ref, 'master') && github.head_ref == 'master1'
+    runs-on: ubuntu-latest
     steps:
       - run: |
           echo $VARIABLE2
