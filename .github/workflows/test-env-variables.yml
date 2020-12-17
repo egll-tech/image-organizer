@@ -9,11 +9,12 @@ env:
   RENDER_VARIABLE2: jq -r .version package.json
   # RENDER_VARIABLE4: grep -o '"version": *"[^"]*' package.json | grep -o '[^"]*$'
   # RENDER_VARIABLE4: grep -o '"version": *"[^"]*' package.json | grep -o '[^"]*$'
-  BRANCH: echo $GITHUB_REF | sed -r 's/.*\///g' | sed -r 's/\W/-/g'
+  BRANCH: echo $GITHUB_REF | sed -e 's/refs*\///g' -e 's/heads*\///g' -e 's/tags*\///g'
+  REPO_DIR: test-app
 
 jobs:
   first-job:
-    if: github.head_ref == 'master'
+    if: ${{ github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -30,14 +31,33 @@ jobs:
           echo "BRANCH=$( ${{ env.BRANCH }} )" >> $GITHUB_ENV
           echo $BRANCH
           echo ${{ env.BRANCH }}
-          echo ${{ github.head_ref }}
+          echo ${{ github.ref }}
+          
+          echo "======================================================="
+          echo ${{ hashFiles('./package.json') }}
+          echo ${{ hashFiles('**/package.json') }}    
+          echo ${{ hashFiles('./**/package.json') }}
+
+
+          mkdir ${{ env.REPO_DIR }}
+          cp package.json ${{ env.REPO_DIR }}/
+          rm -f package.json
+          ls -l ${{ env.REPO_DIR }}
+          echo ${{ hashFiles('./package.json') }}
+          echo ${{ hashFiles('**/package.json') }}
+          echo ${{ hashFiles('./**/package.json') }}
+          echo ${{ hashFiles('./${ env.REPO_DIR }/package.json')}}
+          echo ${{ hashFiles('./${ $REPO_DIR }/package.json')}}
+          echo ${{ hashFiles('./${ {{ env.REPO_DIR }} }/package.json')}}
+          echo ${{ hashFiles('./${ ${{ env.REPO_DIR }} }/package.json')}}
+          echo ${{ hashFiles('./*/package.json') }}
       - uses: actions/upload-artifact@v2
         if: success()
         with:
           name: eagle-${{ env.RENDER_VARIABLE2 }}-${{ (env.RENDER_VARIABLE2) }}-${{ env.BRANCH}}-$BRANCH
           path: LICENSE
   second-job:
-    if: startsWith( github.head_ref, 'master')
+    if: ${{ contains( github.ref, 'master') }}
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -45,7 +65,7 @@ jobs:
           echo ${{ env.VARIABLE }}
           echo $VARIABLE3
   third-job:
-    if: startsWith( github.head_ref, 'master') || github.head_ref == 'master'
+    if: ${{ contains( github.ref, 'master') || github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -53,7 +73,7 @@ jobs:
           echo ${{ env.VARIABLE }}
           echo $VARIABLE3
   fourth-job:
-    if: startsWith( github.head_ref, 'master') && github.head_ref == 'master'
+    if: ${{ contains( github.ref, 'master') && github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -61,7 +81,7 @@ jobs:
           echo ${{ env.VARIABLE }}
           echo $VARIABLE3
   five-job:
-    if: startsWith( github.head_ref, 'master1') || github.head_ref == 'master'
+    if: ${{ contains( github.ref, 'master1') || github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -69,7 +89,7 @@ jobs:
           echo ${{ env.VARIABLE }}
           echo $VARIABLE3
   sixth-job:
-    if: startsWith( github.head_ref, 'master1') && github.head_ref == 'master'
+    if: ${{ contains( github.ref, 'master1') && github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -77,7 +97,7 @@ jobs:
           echo ${{ env.VARIABLE }}
           echo $VARIABLE3
   seventh-job:
-    if: startsWith( github.head_ref, 'master') || github.head_ref == 'master1'
+    if: ${{ contains( github.ref, 'master') || github.ref == 'refs/heads/master1' }}
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -85,7 +105,135 @@ jobs:
           echo ${{ env.VARIABLE }}
           echo $VARIABLE3
   eigth-job:
-    if: startsWith( github.head_ref, 'master') && github.head_ref == 'master1'
+    if: ${{ contains( github.ref, 'master') && github.ref == 'refs/heads/master1' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  third-job-2:
+    if: ${{ contains( github.ref, 'master') }} || ${{ github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  fourth-job-2:
+    if: ${{ contains( github.ref, 'master') }} && ${{ github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  five-job-2:
+    if: ${{ contains( github.ref, 'master1') }} || ${{ github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  sixth-job-2:
+    if: ${{ contains( github.ref, 'master1') }} && ${{ github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  seventh-job-2:
+    if: ${{ contains( github.ref, 'master') }} || ${{ github.ref == 'refs/heads/master1' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  eigth-job-2:
+    if: ${{ contains( github.ref, 'master') }} && ${{ github.ref == 'refs/heads/master1' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  first-job-3:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - shell: bash
+        run: |
+          echo ${{ env.VARIABLE }}
+          echo "VARIABLE2=new" >> $GITHUB_ENV
+          echo $VARIABLE2
+          echo $VARIABLE3
+          echo "testing variables"
+          echo $( ${{ env.RENDER_VARIABLE2 }} )
+          echo $( $RENDER_VARIABLE2 )
+          echo "RENDER_VARIABLE2=$( ${{ env.RENDER_VARIABLE2 }} )" >> $GITHUB_ENV
+          echo "BRANCH=$( ${{ env.BRANCH }} )" >> $GITHUB_ENV
+          echo $BRANCH
+          echo ${{ env.BRANCH }}
+          echo ${{ github.ref }}
+      - uses: actions/upload-artifact@v2
+        if: success()
+        with:
+          name: eagle-${{ env.RENDER_VARIABLE2 }}-${{ (env.RENDER_VARIABLE2) }}-${{ env.BRANCH}}-$BRANCH
+          path: LICENSE
+  second-job-3:
+    if: contains( github.ref, 'master')
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  third-job-3:
+    if: contains( github.ref, 'master') || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  fourth-job-3:
+    if: contains( github.ref, 'master') && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  five-job-3:
+    if: contains( github.ref, 'master1') || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  sixth-job-3:
+    if: contains( github.ref, 'master1') && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  seventh-job-3:
+    if: contains( github.ref, 'master') || github.ref == 'refs/heads/master1'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $VARIABLE2
+          echo ${{ env.VARIABLE }}
+          echo $VARIABLE3
+  eigth-job-3:
+    if: contains( github.ref, 'master') && github.ref == 'refs/heads/master1'
     runs-on: ubuntu-latest
     steps:
       - run: |
