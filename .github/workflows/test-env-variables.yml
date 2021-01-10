@@ -10,7 +10,7 @@ env:
   # RENDER_VARIABLE4: grep -o '"version": *"[^"]*' package.json | grep -o '[^"]*$'
   # RENDER_VARIABLE4: grep -o '"version": *"[^"]*' package.json | grep -o '[^"]*$'
   BRANCH: echo $GITHUB_REF | sed -e 's/refs*\///g' -e 's/heads*\///g' -e 's/tags*\///g'
-  REPO_DIR: test-app
+  REPO_DIR: asd
 
 jobs:
   first-job:
@@ -39,10 +39,12 @@ jobs:
           echo ${{ hashFiles('./**/package.json') }}
 
 
-          mkdir ${{ env.REPO_DIR }}
-          cp package.json ${{ env.REPO_DIR }}/
-          rm -f package.json
+          # mkdir ${{ env.REPO_DIR }}
+          # cp package.json ${{ env.REPO_DIR }}/
           ls -l ${{ env.REPO_DIR }}
+          # cd ${{ env.REPO_DIR }}
+          # npm version minor
+          # cd ..
           echo ${{ hashFiles('./package.json') }}
           echo ${{ hashFiles('**/package.json') }}
           echo ${{ hashFiles('./**/package.json') }}
