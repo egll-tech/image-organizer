@@ -37,6 +37,7 @@ jobs:
           echo ${{ hashFiles('./package.json') }}
           echo ${{ hashFiles('**/package.json') }}    
           echo ${{ hashFiles('./**/package.json') }}
+          echo ${{ hashFiles('./*/package.json') }}
 
 
           # mkdir ${{ env.REPO_DIR }}
@@ -48,6 +49,9 @@ jobs:
           echo ${{ hashFiles('./package.json') }}
           echo ${{ hashFiles('**/package.json') }}
           echo ${{ hashFiles('./**/package.json') }}
+          echo ${{ hashFiles('./*/package.json') }}
+          echo ${{ hashFiles('./env.REPO_DIR/package.json')}}
+          echo ${{ hashFiles('./$REPO_DIR/package.json')}}
           echo ${{ hashFiles('./${ env.REPO_DIR }/package.json')}}
           echo ${{ hashFiles('./${ $REPO_DIR }/package.json')}}
           echo ${{ hashFiles('./${ {{ env.REPO_DIR }} }/package.json')}}
