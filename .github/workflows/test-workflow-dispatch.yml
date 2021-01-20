@@ -1,0 +1,31 @@
+name: Test Workflow Dispatch
+
+on:
+  pull_request:
+
+env:
+  BRANCH_COMMAND: echo ${{ github.ref }} | sed -e 's/refs*\///g' -e 's/heads*\///g' -e 's/tags*\///g'
+  TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+
+jobs:
+  first-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set variables for 'pull_request'
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "BRANCH=${{ github.head_ref }}" >> $GITHUB_ENV
+          echo "REF=refs/heads/${{ github.head_ref }}" >> $GITHUB_ENV
+      - name: Set variables for 'push'
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "BRANCH=$( echo ${{ github.ref }} | sed -e 's/refs*\///g' -e 's/heads*\///g' -e 's/tags*\///g' )" >> $GITHUB_ENV
+          echo "REF=${{ github.ref }}" >> $GITHUB_ENV
+      - name: Dispatch publish request
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Publish
+          repo: egll-tech/image-organizer
+          token: ${{ env.TOKEN }}
+          inputs: '{ "branch": "${{ env.BRANCH }}", "stable": "false" }'
+          ref: ${{ env.REF }}

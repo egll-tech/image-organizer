@@ -1,0 +1,20 @@
+name: Publish
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'The branch to be published'
+        required: true
+      stable:
+        description: 'Would you like to deploy beta?'
+        required: true
+        default: false
+
+jobs:
+  first-job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo ${{ github.event.inputs.branch }}
+          echo ${{ github.event.inputs.stable }}
+          echo ${{ github.ref }}
