@@ -14,6 +14,9 @@ const spinner_options = {
 (async () => {
   const input = args[0] || __dirname;
   const output = args[1] || path.join(__dirname, 'output');
+  // this is a new line
+  // adding a new line
+  // adding a super cool line
 
   const folder_spinner = ora({
     text: 'Getting all folder to process',
