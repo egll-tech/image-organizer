@@ -3,8 +3,13 @@ name: First long name
 on:
   push:
 
+env:
+  REPO_NAME: 'cerberus'
+  REPO_DIR: '$REPO_NAME/packages/cam-app'
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - run: echo 'FIRST WORKFLOW'
+      - run: echo ${{ env.REPO_DIR}}
