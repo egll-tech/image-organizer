@@ -6,6 +6,7 @@ on:
 env:
   REPO_NAME: 'cerberus'
   REPO_DIR: '$REPO_NAME/packages/cam-app'
+  NAME: 'image-organizer'
 
 jobs:
   test:
@@ -13,3 +14,7 @@ jobs:
     steps:
       - run: echo 'FIRST WORKFLOW'
       - run: echo ${{ env.REPO_DIR}}
+      - name: Checkout cam-app-release-automation
+        uses: actions/checkout@v2
+        with:
+          repository: egll-tech/${{ env.NAME }}
